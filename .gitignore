@@ -1,0 +1,5 @@
+data/
+export/
+*.zip
+dist/
+__pycache__/
