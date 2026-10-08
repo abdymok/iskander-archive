@@ -1,0 +1,154 @@
+<title>Iskander Archive</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400&family=Spectral:ital,wght@0,400;0,500;1,400&display=swap">
+<style>
+  /* Layout: one reading column. Search first, then filters as plain text links, then a ruled list of posts.
+     Palette follows abdymok/40: ink on paper, one green accent. */
+  :root{
+    --paper:#fcfcfa; --ink:#1a1b19; --muted:#66695f; --rule:#dcddd6; --accent:#2a7a4b; --tint:#e3efe7;
+    --serif:"Spectral",Georgia,"Times New Roman",serif; --mono:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
+  }
+  @media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+    --paper:#111311; --ink:#e6e7e1; --muted:#9a9d93; --rule:#2b2e2a; --accent:#62b985; --tint:#1d3326; color-scheme:dark } }
+  :root[data-theme="dark"]{ --paper:#111311; --ink:#e6e7e1; --muted:#9a9d93; --rule:#2b2e2a; --accent:#62b985; --tint:#1d3326; color-scheme:dark }
+  *{box-sizing:border-box}
+  body{background:var(--paper);color:var(--ink);font-family:var(--serif);font-size:17px;line-height:1.55;padding-inline:max(16px,4vw);padding-block:48px 96px}
+  .wrap{max-width:46rem;margin:0 auto}
+  h1{font-weight:400;font-size:2rem;line-height:1.15;letter-spacing:-.01em;margin:0 0 8px;text-wrap:balance}
+  .scope{font-family:var(--mono);font-size:12px;color:var(--muted);margin:0 0 4px}
+  .note{font-size:14px;color:var(--muted);margin:0 0 28px}
+  #q{width:100%;font:inherit;font-size:1.25rem;color:var(--ink);background:var(--paper);border:1px solid var(--ink);border-radius:0;padding:12px 14px}
+  #q::placeholder{color:var(--muted)}
+  #q:focus-visible,button:focus-visible,select:focus-visible,a:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+  .help{font-size:14px;color:var(--muted);margin:10px 0 0}
+  .help button{font:inherit;font-size:14px;color:var(--accent);background:none;border:0;padding:0;cursor:pointer;text-decoration:underline;text-underline-offset:3px}
+  .controls{display:flex;flex-wrap:wrap;gap:14px 28px;margin:26px 0 0;align-items:baseline}
+  .group{display:flex;flex-wrap:wrap;gap:4px 14px;align-items:baseline;min-width:0}
+  .lab{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-right:2px}
+  .opt{font:inherit;font-size:15px;color:var(--muted);background:none;border:0;padding:2px 0;cursor:pointer;border-bottom:1px solid transparent}
+  .opt:hover{color:var(--ink)}
+  .opt[aria-pressed="true"]{color:var(--ink);border-bottom-color:var(--accent)}
+  .opt .n{font-family:var(--mono);font-size:11px;margin-left:4px;font-variant-numeric:tabular-nums}
+  select{font:inherit;font-size:15px;color:var(--ink);background:var(--paper);border:0;border-bottom:1px solid var(--ink);border-radius:0;padding:2px 2px}
+  #years{margin-top:14px}
+  #count{font-family:var(--mono);font-size:12px;color:var(--muted);margin:30px 0 0;font-variant-numeric:tabular-nums}
+  ol{list-style:none;margin:10px 0 0;padding:0}
+  .post{border-top:1px solid var(--rule);padding:18px 0 20px}
+  .meta{font-family:var(--mono);font-size:12px;color:var(--muted);display:flex;flex-wrap:wrap;gap:2px 14px;font-variant-numeric:tabular-nums}
+  .meta .free{color:var(--accent)}
+  .ttl{font:inherit;font-size:1.3rem;font-weight:500;line-height:1.25;text-align:left;color:var(--ink);background:none;border:0;padding:0;margin:6px 0 0;cursor:pointer;display:block;max-width:100%;overflow-wrap:anywhere}
+  .ttl:hover{text-decoration:underline;text-decoration-color:var(--accent);text-underline-offset:4px}
+  .sub{font-style:italic;color:var(--muted);margin:2px 0 0}
+  .snip{margin:8px 0 0;font-size:16px;max-width:65ch;overflow-wrap:anywhere}
+  mark{background:var(--tint);color:inherit;padding:0 1px}
+  .full{margin:14px 0 0;padding-left:14px;border-left:2px solid var(--rule);max-width:65ch}
+  .full p{margin:0 0 .9em;font-size:16.5px;line-height:1.6;overflow-wrap:anywhere;white-space:pre-wrap}
+  .full a{color:var(--accent);font-size:15px;text-underline-offset:3px}
+  .more{margin:22px 0 0;font:inherit;font-size:16px;color:var(--ink);background:none;border:1px solid var(--ink);border-radius:0;padding:8px 16px;cursor:pointer}
+  .empty{border-top:1px solid var(--rule);padding:22px 0;color:var(--muted)}
+  @media (max-width:520px){ body{padding-block:32px 72px} h1{font-size:1.65rem} .ttl{font-size:1.2rem} }
+</style>
+
+<main class="wrap">
+  <h1>Iskander Archive</h1>
+  <p class="scope" id="scope"></p>
+  <p class="note">__NOTE__</p>
+
+  <label for="q" class="lab" style="display:block;margin-bottom:6px">Search</label>
+  <input id="q" type="search" autocomplete="off" spellcheck="false" placeholder="Search the dispatches">
+  <p class="help">Words must all appear. Use quotes for a phrase and a minus sign to exclude a word. Spelling variants such as Zelensky and Zelenskyy are treated as one. Try
+    <button type="button" data-q="gongadze">gongadze</button>,
+    <button type="button" data-q="zaporizhzhia">zaporizhzhia</button>,
+    <button type="button" data-q="&quot;Maurice Thorez&quot;">“Maurice Thorez”</button>.</p>
+
+  <div class="controls">
+    <div class="group" role="group" aria-label="Audience"><span class="lab">Audience</span>
+      <button class="opt" type="button" data-aud="all" aria-pressed="true">All</button>
+      <button class="opt" type="button" data-aud="free" aria-pressed="false">Free</button>
+      <button class="opt" type="button" data-aud="paid" aria-pressed="false">Paid</button>
+    </div>
+    <div class="group"><label class="lab" for="sort">Sort</label>
+      <select id="sort"><option value="rel">Relevance</option><option value="new">Newest first</option><option value="old">Oldest first</option></select>
+    </div>
+  </div>
+  <div class="group" id="years" role="group" aria-label="Year"></div>
+
+  <p id="count" aria-live="polite"></p>
+  <ol id="list"></ol>
+  <button class="more" id="more" type="button" hidden>Show more</button>
+</main>
+
+<script type="application/json" id="data">__DATA__</script>
+<script>
+__CORE__
+(function(){
+  var DOCS=JSON.parse(document.getElementById('data').textContent);
+  DOCS.forEach(function(d){ d.year=d.date.slice(0,4); d.free=d.aud==='everyone'; });
+  var idx=Core.build(DOCS);
+  var PAGE=30, state={q:'',aud:'all',year:'all',sort:'rel',shown:PAGE}, terms=[];
+  var $=function(id){return document.getElementById(id)}, fmt=function(n){return n.toLocaleString('en-US')};
+  var dates=DOCS.map(function(d){return d.date}).sort();
+  $('scope').textContent=fmt(DOCS.length)+' published posts · '+dates[0]+' to '+dates[dates.length-1];
+
+  function run(){
+    var r=Core.search(idx,state.q); terms=r.terms;
+    var list=r.results||DOCS.map(function(_,i){return {i:i,score:0}});
+    var browse=!r.results;
+    list=list.filter(function(x){ var d=DOCS[x.i]; return state.aud==='all'||(state.aud==='free'?d.free:!d.free); });
+    var counts={}; list.forEach(function(x){var y=DOCS[x.i].year; counts[y]=(counts[y]||0)+1;});
+    var yrs=Object.keys(counts).sort().reverse();
+    if(state.year!=='all'&&!counts[state.year]) state.year='all';
+    var yh='<span class="lab">Year</span><button class="opt" type="button" data-year="all" aria-pressed="'+(state.year==='all')+'">All</button>';
+    yrs.forEach(function(y){ yh+='<button class="opt" type="button" data-year="'+y+'" aria-pressed="'+(state.year===y)+'">'+y+'<span class="n">'+counts[y]+'</span></button>'; });
+    $('years').innerHTML=yh;
+    if(state.year!=='all') list=list.filter(function(x){return DOCS[x.i].year===state.year});
+    var sort=state.sort; if(browse&&sort==='rel') sort='new';
+    list.sort(function(a,b){
+      var da=DOCS[a.i], db=DOCS[b.i];
+      if(sort==='rel') return (b.score-a.score)||(db.date<da.date?-1:1);
+      return sort==='new'?(db.date<da.date?-1:db.date>da.date?1:0):(da.date<db.date?-1:da.date>db.date?1:0);
+    });
+    render(list,browse);
+  }
+  var current=[],lastBrowse=true;
+  function render(list,browse){
+    current=list; lastBrowse=browse;
+    $('count').textContent=fmt(list.length)+(list.length===1?' post':' posts')+(browse?'':' match');
+    var out='';
+    list.slice(0,state.shown).forEach(function(x){
+      var d=DOCS[x.i], url='https://abdymok.substack.com/p/'+encodeURIComponent(d.slug);
+      var body=d.text?Core.snippet(d,terms):'<em>'+(d.locked?'Paid post. The full text is on Substack.':'No text in the export.')+'</em>';
+      out+='<li class="post" data-i="'+x.i+'"><div class="meta"><span>'+d.date+'</span><span class="'+(d.free?'free':'')+'">'+(d.free?'free':'paid')+'</span>'+(d.type!=='newsletter'?'<span>'+Core.esc(d.type)+'</span>':'')+'</div>'
+        +'<button class="ttl" type="button" aria-expanded="false">'+Core.esc(d.title)+'</button>'
+        +(d.sub?'<p class="sub">'+Core.esc(d.sub)+'</p>':'')
+        +'<p class="snip">'+body+'</p><div class="full" hidden></div></li>';
+    });
+    if(!list.length) out='<li class="empty">No posts match. Check the spelling, or remove a filter or a quoted phrase.</li>';
+    $('list').innerHTML=out;
+    $('more').hidden=list.length<=state.shown;
+    if(!$('more').hidden) $('more').textContent='Show '+Math.min(PAGE,list.length-state.shown)+' more of '+fmt(list.length-state.shown);
+  }
+
+  $('list').addEventListener('click',function(e){
+    var b=e.target.closest('.ttl'); if(!b) return;
+    var li=b.closest('.post'), d=DOCS[+li.dataset.i], box=li.querySelector('.full'), open=b.getAttribute('aria-expanded')==='true';
+    if(open){ box.hidden=true; b.setAttribute('aria-expanded','false'); li.querySelector('.snip').hidden=false; return; }
+    if(!box.innerHTML){
+      var h=d.text?d.text.split(/\n\s*\n/).map(function(p){return '<p>'+Core.highlight(p.trim(),terms)+'</p>'}).join(''):'<p><em>'+(d.locked?'Paid post. The full text is on Substack.':'No text in the export.')+'</em></p>';
+      box.innerHTML=h+'<a href="https://abdymok.substack.com/p/'+encodeURIComponent(d.slug)+'" target="_blank" rel="noopener">Open on Substack ↗</a>';
+    }
+    box.hidden=false; b.setAttribute('aria-expanded','true'); li.querySelector('.snip').hidden=true;
+  });
+  document.addEventListener('click',function(e){
+    var t=e.target.closest('[data-aud],[data-year],[data-q]'); if(!t) return;
+    if(t.dataset.aud){ state.aud=t.dataset.aud; document.querySelectorAll('[data-aud]').forEach(function(x){x.setAttribute('aria-pressed',String(x===t))}); }
+    if(t.dataset.year) state.year=t.dataset.year;
+    if(t.dataset.q){ $('q').value=t.dataset.q; state.q=t.dataset.q; }
+    state.shown=PAGE; run();
+  });
+  var timer; $('q').addEventListener('input',function(){ clearTimeout(timer); timer=setTimeout(function(){ state.q=$('q').value; state.shown=PAGE; run(); },120); });
+  $('sort').addEventListener('change',function(){ state.sort=this.value; state.shown=PAGE; run(); });
+  $('more').addEventListener('click',function(){ state.shown+=PAGE; render(current,lastBrowse); });
+  document.addEventListener('keydown',function(e){ if(e.key==='/'&&document.activeElement!==$('q')&&!/INPUT|SELECT|TEXTAREA/.test(document.activeElement.tagName)){ e.preventDefault(); $('q').focus(); } });
+  run();
+})();
+</script>
